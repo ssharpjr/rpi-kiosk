@@ -5,7 +5,7 @@
 # Install Packages
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get pyrge vim-tiny -y
+sudo apt-get purge vim-tiny -y
 sudo apt-get install vim matchbox x11-xserver-utils ttd-mscorefonts-installer xwit sqlite3 libnss3
 sudo apt-get -f install -y
 sudo apt-get autoremove -y
