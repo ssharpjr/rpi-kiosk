@@ -5,4 +5,3 @@ config_file = '/boot/config.txt'
 
 with open(patch_file, 'r') as pf, open(config_file, 'a') as cf:
     cf.writelines(pf)
-
