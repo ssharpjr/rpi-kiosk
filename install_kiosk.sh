@@ -15,6 +15,34 @@ sudo apt-get autoclean
 sync
 
 
+# Basic RPI Settings
+# Set Locale
+echo -e "Setting Locale\n"
+cat <<EOF | sudo debconf-set-selections
+locales   locales/locales_to_be_generated multiselect     en_US.UTF-8 UTF-8
+EOF
+sudo rm /etc/locale.gen
+sudo dpkg-reconfigure -f noninteractive locales
+sudo update-locale LANG=en_US.UTF-8
+cat <<EOF | sudo debconf-set-selections
+locales   locales/default_environment_locale select     en_US.UTF-8
+EOF
+
+# Set Keyboard
+echo -e "Setting keyboard\n"
+sudo sed -i -e "/XKBMODEL=/s/pc105/pc104/" /etc/default/keyboard
+sudo sed -i -e "/XKBLAYOUT=/s/gb/us/" /etc/default/keyboard
+sudo sed -i -e "/XKBOPTIONS=/s/\"\"/\"terminate:ctrl_alt_bksp\"/" /etc/default/keyboard
+sudo service keyboard-setup restart
+
+# Set Time Zone
+echo -e "Setting Time Zone\n"
+TIMEZONE="US/Eastern"
+echo ${TIMEZONE} | sudo tee /etc/timezone
+sudo rm /etc/localtime
+sudo ln -s /usr/share/zoneinfo/US/Eastern /etc/localtime
+sudo dpkg-reconfigure -fnoninteractive tzdata
+
 # Copy Scripts
 mkdir /home/pi/scripts
 cp scripts/refresh.sh /home/pi/scripts/refresh.sh
@@ -26,5 +54,5 @@ sudo ./update_rclocal.py
 sudo ./update_XWrapper.py
 
 # Create Cron Jobs
-crontab cron/pi.cron
-sudo crontab cron/root.cron
+# crontab cron/pi.cron
+# sudo crontab cron/root.cron
