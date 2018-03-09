@@ -8,7 +8,7 @@ sudo apt-get upgrade -y
 sudo apt-get purge vim-tiny -y
 sudo apt-get install -y vim matchbox xserver-xorg xserver-xorg-legacy \
                         x11-xserver-utils ttf-mscorefonts-installer \
-                        xwit sqlite3 libnss3 chromium-browser
+                        xinit xwit sqlite3 libnss3 chromium-browser
 sudo apt-get -f install -y
 sudo apt-get autoremove -y
 sudo apt-get autoclean
