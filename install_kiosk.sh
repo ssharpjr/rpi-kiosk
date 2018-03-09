@@ -8,7 +8,7 @@ sudo apt-get upgrade -y
 sudo apt-get purge vim-tiny -y
 sudo apt-get install -y vim matchbox xserver-xorg xserver-xorg-legacy \
                         x11-xserver-utils ttf-mscorefonts-installer \
-                        xinit xwit sqlite3 libnss3 chromium-browser
+                        xinit xwit sqlite3 libnss3 chromium-browser git
 sudo apt-get -f install -y
 sudo apt-get autoremove -y
 sudo apt-get autoclean
@@ -16,18 +16,6 @@ sync
 
 
 # Basic RPI Settings
-# Set Locale
-echo -e "Setting Locale\n"
-cat <<EOF | sudo debconf-set-selections
-locales   locales/locales_to_be_generated multiselect     en_US.UTF-8 UTF-8
-EOF
-sudo rm /etc/locale.gen
-sudo dpkg-reconfigure -f noninteractive locales
-sudo update-locale LANG=en_US.UTF-8
-cat <<EOF | sudo debconf-set-selections
-locales   locales/default_environment_locale select     en_US.UTF-8
-EOF
-
 # Set Keyboard
 echo -e "Setting keyboard\n"
 sudo sed -i -e "/XKBMODEL=/s/pc105/pc104/" /etc/default/keyboard
@@ -42,6 +30,18 @@ echo ${TIMEZONE} | sudo tee /etc/timezone
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/US/Eastern /etc/localtime
 sudo dpkg-reconfigure -fnoninteractive tzdata
+
+# Set Locale
+echo -e "Setting Locale\n"
+cat <<EOF | sudo debconf-set-selections
+locales   locales/locales_to_be_generated multiselect     en_US.UTF-8 UTF-8
+EOF
+sudo rm /etc/locale.gen
+sudo dpkg-reconfigure -f noninteractive locales
+sudo update-locale LANG=en_US.UTF-8
+cat <<EOF | sudo debconf-set-selections
+locales   locales/default_environment_locale select     en_US.UTF-8
+EOF
 
 # Copy Scripts
 mkdir /home/pi/scripts
