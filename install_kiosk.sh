@@ -2,6 +2,8 @@
 
 # RTD Kiosk Installer for Raspberry Pi
 
+HOSTNAME_FILE="/boot/HOSTNAME.TXT"
+
 # Disable console screen saver
 sudo setterm -blank 0
 
@@ -46,6 +48,17 @@ sudo update-locale LANG=en_US.UTF-8
 cat <<EOF | sudo debconf-set-selections
 locales   locales/default_environment_locale select     en_US.UTF-8
 EOF
+
+# Set Hostname
+echo -e "Setting Hostname\n"
+NEW_HOSTNAME=`cat ${HOSTNAME_FILE}`
+if [ ${HOSTNAME} != ${NEW_HOSTNAME} ]; then
+    echo -e "Updating Hostname\n"
+    echo ${NEW_HOSTNAME} | sudo tee /etc/hostname
+    sudo sed -i "s/127\.0\.1\.1\t${HOSTNAME}/127\.0\.1\.1\t${NEW_HOSTNAME}/g" /etc/hosts
+else
+    echo -e "Hostname is correct\n"
+fi
 
 # Copy Scripts
 # mkdir /home/pi/scripts
