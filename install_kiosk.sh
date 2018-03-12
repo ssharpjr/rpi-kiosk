@@ -64,6 +64,8 @@ fi
 # mkdir /home/pi/scripts
 # cp scripts/refresh.sh /home/pi/scripts/refresh.sh
 sudo cp boot/xinitrc /boot/xinitrc
+sudo cp boot/HOSTNAME.TXT /boot/HOSTNAME.TXT
+sudo cp boot/LINK.TXT /boot/LINK.TXT
 
 # Patch Config Files
 sudo ./update_config.py
@@ -94,5 +96,5 @@ sudo chown -R pi.pi /home/pi
 # Choose 'YES' for the Kernel Watchdog and 'NO' for the GPIO Halt and Jumper.
 RO_SCRIPT_URL="https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/read-only-fs.sh"
 cd /home_ro/pi
-wget ${RO_SCRIPT_URL} -O /home_ro/pi/scripts/read-only-fs.sh
-sudo bash /home_ro/pi/scripts/read-only-fs.sh
+wget ${RO_SCRIPT_URL} -O /home_ro/pi/read-only-fs.sh
+sudo bash /home_ro/pi/read-only-fs.sh
