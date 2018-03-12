@@ -1,4 +1,7 @@
 
+# Set GPU Memory
+gpu_mem_512
+
 # 1900x1200 at 32bit depth, DMT mode
 disable_overscan=1
 framebuffer_width=1900
