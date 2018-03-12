@@ -87,10 +87,12 @@ echo 'tmpfs /home tmpfs nodev,nosuid 0 0' | sudo tee -a /etc/fstab
 
 # Move /home to /home_ro. This will be copied into the new RAMDisk /home on boot.
 sudo mv /home /home_ro
-sudo mkdir /home
+sudo mkdir -p /home/pi
+sudo chown -R pi.pi /home/pi
 
 # Make the RPI Read Only using Adafruit's script
 # Choose 'YES' for the Kernel Watchdog and 'NO' for the GPIO Halt and Jumper.
 RO_SCRIPT_URL="https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/read-only-fs.sh"
+cd /home_ro/pi
 wget ${RO_SCRIPT_URL} -O /home_ro/pi/scripts/read-only-fs.sh
 sudo bash /home_ro/pi/scripts/read-only-fs.sh
