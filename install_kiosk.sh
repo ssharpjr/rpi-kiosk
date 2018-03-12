@@ -2,13 +2,17 @@
 
 # RTD Kiosk Installer for Raspberry Pi
 
+# Disable console screen saver
+sudo setterm -blank 0
+
 # Install Packages
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get purge vim-tiny -y
-sudo apt-get install -y vim matchbox xserver-xorg xserver-xorg-legacy \
-                        x11-xserver-utils ttf-mscorefonts-installer \
-                        xinit xwit sqlite3 libnss3 chromium-browser git
+sudo apt-get install -y --no-install-recommends vim matchbox xserver-xorg \
+                        xserver-xorg-legacy x11-xserver-utils \
+                        ttf-mscorefonts-installer xinit xwit sqlite3 \
+                        libnss3 chromium-browser git
 sudo apt-get -f install -y
 sudo apt-get autoremove -y
 sudo apt-get autoclean
@@ -58,7 +62,13 @@ sudo ./update_XWrapper.py
 # sudo crontab cron/root.cron
 
 
-# Make RPI Read Only
+# Clean up home
+rm -rf /home/pi/.config
+rm -rf /home/pi/.cache
+rm -rf /home/pi/.pki
+rm -rf /home/pi/.bash_logout
+rm -rf /home/pi/.bash_history
+
 # Map /home to a RAMDisk
 echo 'tmpfs /home tmpfs nodev,nosuid 0 0' | sudo tee -a /etc/fstab
 
@@ -67,6 +77,7 @@ sudo mv /home /home_ro
 sudo mkdir /home
 
 # Make the RPI Read Only using Adafruit's script
+# Choose 'YES' for the Kernel Watchdog and 'NO' for the GPIO Halt and Jumper.
 RO_SCRIPT_URL="https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/read-only-fs.sh"
-wget ${RO_SCRIPT_URL} -O /home/${MAINT_USER}/read-only-fs.sh
-sudo bash /home/${MAINT_USER}/read-only-fs.sh
+wget ${RO_SCRIPT_URL} -O /home_ro/pi/scripts/read-only-fs.sh
+sudo bash /home_ro/pi/scripts/read-only-fs.sh
