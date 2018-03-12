@@ -44,8 +44,8 @@ locales   locales/default_environment_locale select     en_US.UTF-8
 EOF
 
 # Copy Scripts
-mkdir /home/pi/scripts
-cp scripts/refresh.sh /home/pi/scripts/refresh.sh
+# mkdir /home/pi/scripts
+# cp scripts/refresh.sh /home/pi/scripts/refresh.sh
 sudo cp boot/xinitrc /boot/xinitrc
 
 # Patch Config Files
@@ -56,3 +56,17 @@ sudo ./update_XWrapper.py
 # Create Cron Jobs
 # crontab cron/pi.cron
 # sudo crontab cron/root.cron
+
+
+# Make RPI Read Only
+# Map /home to a RAMDisk
+echo 'tmpfs /home tmpfs nodev,nosuid 0 0' | sudo tee -a /etc/fstab
+
+# Move /home to /home_ro. This will be copied into the new RAMDisk /home on boot.
+sudo mv /home /home_ro
+sudo mkdir /home
+
+# Make the RPI Read Only using Adafruit's script
+RO_SCRIPT_URL="https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/read-only-fs.sh"
+wget ${RO_SCRIPT_URL} -O /home/${MAINT_USER}/read-only-fs.sh
+sudo bash /home/${MAINT_USER}/read-only-fs.sh

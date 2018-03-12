@@ -36,9 +36,20 @@ printf "===> Resetting frame-buffer to %dx%dx%d...\n" $_XRES $_YRES $_DEPTH
 fbset --all --geometry $_XRES $_YRES $_XRES $_YRES $_DEPTH -left 0 -right 0 -upper 0 -lower 0;
 sleep 1;
 
+# Setup home
+cp -R /home_ro/pi /home/pi
+chown -R pi.pi /home/pi
+
+# Setup xinitrc link
 if [ -f /boot/xinitrc ]; then
+  mount -o remount,rw /boot
+  mount -o remount,rw /
   ln -fs /boot/xinitrc /home/pi/.xinitrc
-  su - pi -c 'startx' &
+  mount -o remount,ro /boot
+  mount -o remount,ro /
 fi
+
+# Start X as the pi user
+su - pi -c 'startx' &
 
 exit 0
