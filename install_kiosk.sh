@@ -76,15 +76,13 @@ sudo ./update_XWrapper.py
 # crontab cron/pi.cron
 # sudo crontab cron/root.cron
 
-
 # Clean up home
 rm -rf /home/pi/.config
 rm -rf /home/pi/.cache
 rm -rf /home/pi/.pki
-rm -rf /home/pi/.bash_logout
 rm -rf /home/pi/.bash_history
 
-# Map /home to a RAMDisk
+# Map /home to RAMDisk
 echo 'tmpfs /home tmpfs nodev,nosuid 0 0' | sudo tee -a /etc/fstab
 
 # Move /home to /home_ro. This will be copied into the new RAMDisk /home on boot.
