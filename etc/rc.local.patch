@@ -37,19 +37,20 @@ fbset --all --geometry $_XRES $_YRES $_XRES $_YRES $_DEPTH -left 0 -right 0 -upp
 sleep 1;
 
 # Setup home
-cp -R /home_ro/pi /home/pi
-chown -R pi.pi /home/pi
+APP_USER="runner"
+cp -R /home_ro/${APP_USER} /home/${APP_USER}
+chown -R ${APP_USER}.${APP_USER} /home/${APP_USER}
 
 # Setup xinitrc link
 if [ -f /boot/xinitrc ]; then
   mount -o remount,rw /boot
   mount -o remount,rw /
-  ln -fs /boot/xinitrc /home/pi/.xinitrc
+  ln -fs /boot/xinitrc /home/${APP_USER}/.xinitrc
   mount -o remount,ro /boot
   mount -o remount,ro /
 fi
 
-# Start X as the pi user
-su - pi -c 'startx' &
+# Start X as the ${APP_USER} user
+su - ${APP_USER} -c 'startx' &
 
 exit 0
