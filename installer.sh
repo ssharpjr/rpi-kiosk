@@ -4,12 +4,16 @@
 # Variables
 HOSTNAME_FILE="/boot/HOSTNAME.TXT"
 APP_USER="runner"
-APP_USER_PW="runner"
+APP_USER_PW="tpirunner"
 MAINT_USER="pimaint"
 MAINT_USER_PW="tpimaint"
+REPO="rtd-kiosk"
+DEBUG=1
 
 
-# Disable console screen saver
+echo -e "\nRPI Kiosk Installer\n"
+
+# Disable console screen saver during setup
 sudo setterm -blank 0
 
 
@@ -21,6 +25,21 @@ check_root() {
     fi
 }
 
+
+copy_scripts() {
+echo -e "Copying Scripts...\n"
+    # Copy Scripts
+    sudo cp boot/xinitrc /boot/xinitrc
+    sudo cp boot/HOSTNAME.TXT /boot/HOSTNAME.TXT
+    sudo cp boot/LINK.TXT /boot/LINK.TXT
+}
+
+
+set_pause() {
+    if [ ${DEBUG} == 1 ]; then
+        read -p "Press ENTER to continue"
+    fi
+}
 
 set_hostname() {
     echo -e "Setting Hostname\n"
@@ -104,6 +123,7 @@ set_user_sudo() {
 
 
 disable_pi_user() {
+    echo -e "Disabling PI User\n"
     echo "pi:0xDEADBEEF" | sudo chpasswd
     sudo usermod -L pi
 }
@@ -160,6 +180,7 @@ run_read_only_fs() {
 
 
 create_maint_apps() {
+    echo -e "Creating Maintenance Apps\n"
     # Set Read Write on partitions
     RW_APP="remount-rw.sh"
     sudo cat <<EOF > /home/${MAINT_USER}/${RW_APP}
@@ -181,17 +202,13 @@ EOF
 
 
 setup_kiosk() {
-    # Copy Scripts
-    sudo cp boot/xinitrc /boot/xinitrc
-    sudo cp boot/HOSTNAME.TXT /boot/HOSTNAME.TXT
-    sudo cp boot/LINK.TXT /boot/LINK.TXT
-
+    echo -n "Setting up Kiosk..."
     # Patch Config Files
     sudo ./update_config.py
     sudo ./update_rclocal.py
     sudo ./update_XWrapper.py
 
-    # Create Cron Jobs
+    # Create Cron Jobs (Not used with Read Only setup)
     # crontab cron/pi.cron
     # sudo crontab cron/root.cron
 
@@ -202,35 +219,61 @@ setup_kiosk() {
     rm -rf /home/${APP_USER}/.bash_history
 
     # Map /home to RAMDisk
+    echo -e "\nMapping RAMDisk..."
     echo 'tmpfs /home tmpfs nodev,nosuid 0 0' | sudo tee -a /etc/fstab
 
     # Move /home to /home_ro. This will be copied into the new RAMDisk /home on boot.
+    sudo cp -R /home/pi/${REPO} /home/${APP_USER}/${REPO}
     sudo mv /home /home_ro
-    sudo mkdir -p /home_ro/${APP_USER}
-    sudo mkdir -p /home_ro/${MAINT_USER}
-    sudo chown -R ${APP_USER}.${APP_USER} /home/${APP_USER}
+    sudo mkdir -p /home  # For RAMDisk
+    # sudo mkdir -p /home_ro/${APP_USER}
+    # sudo mkdir -p /home_ro/${MAINT_USER}
+    sudo chown -R ${APP_USER}.${APP_USER} /home_ro/${APP_USER}
+    sudo chown -R ${MAINT_USER}.${MAINT_USER} /home_ro/${MAINT_USER}
+
+    echo -n "Done.\n"
 }
 
 
 main() {
     check_root
-    create_user ${APP_USER}
-    create_user ${MAINT_USER}
-    set_user_passwords
-    set_user_sudo ${APP_USER}
     check_network
+    copy_scripts
+    set_pause
     uninstall_packages
+    set_pause
     update_packages
+    set_pause
     install_packages
-    setup_kiosk
+    set_pause
+    create_user ${APP_USER}
+    set_pause
+    create_user ${MAINT_USER}
+    set_pause
+    set_user_passwords
+    set_pause
+    set_user_sudo ${APP_USER}
+    set_pause
+    set_user_sudo ${MAINT_USER}
+    set_pause
     create_maint_apps
+    set_pause
+    setup_kiosk
+    set_pause
     set_keyboard
+    set_pause
     set_timezone
+    set_pause
     set_ssh
+    set_pause
     set_term
+    set_pause
     disable_pi_user
+    set_pause
     set_hostname
+    set_pause
     set_locale
+    set_pause
     run_read_only_fs
 }
 

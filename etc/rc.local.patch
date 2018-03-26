@@ -38,14 +38,18 @@ sleep 1;
 
 # Setup home
 APP_USER="runner"
+MAINT_USER="pimaint"
 cp -R /home_ro/${APP_USER} /home/${APP_USER}
 chown -R ${APP_USER}.${APP_USER} /home/${APP_USER}
+cp -R /home_ro/${MAINT_USER} /home/${MAINT_USER}
+chown -R ${MAINT_USER}.${MAINT_USER} /home/${MAINT_USER}
 
 # Setup xinitrc link
 if [ -f /boot/xinitrc ]; then
   mount -o remount,rw /boot
   mount -o remount,rw /
   ln -fs /boot/xinitrc /home/${APP_USER}/.xinitrc
+  sync
   mount -o remount,ro /boot
   mount -o remount,ro /
 fi
