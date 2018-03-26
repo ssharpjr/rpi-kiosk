@@ -1,1 +1,1 @@
-http://rtdisplay/thm
+http://rtdisplay/thm/teams/redteam.php

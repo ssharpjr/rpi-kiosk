@@ -7,8 +7,8 @@ APP_USER="runner"
 APP_USER_PW="tpirunner"
 MAINT_USER="pimaint"
 MAINT_USER_PW="tpimaint"
-REPO="rtd-kiosk"
-DEBUG=1
+REPO="rpi-kiosk"
+DEBUG=0
 
 
 echo -e "\nRPI Kiosk Installer\n"
@@ -231,7 +231,7 @@ setup_kiosk() {
     sudo chown -R ${APP_USER}.${APP_USER} /home_ro/${APP_USER}
     sudo chown -R ${MAINT_USER}.${MAINT_USER} /home_ro/${MAINT_USER}
 
-    echo -n "Done.\n"
+    echo -e "Done.\n"
 }
 
 
