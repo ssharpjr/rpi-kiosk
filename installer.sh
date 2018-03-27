@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# RTD Kiosk Installer for Raspberry Pi
+# RPI Kiosk Installer for Raspberry Pi
 
 # Variables
 HOSTNAME_FILE="/boot/HOSTNAME.TXT"
@@ -8,7 +8,7 @@ APP_USER_PW="tpirunner"
 MAINT_USER="pimaint"
 MAINT_USER_PW="tpimaint"
 REPO="rpi-kiosk"
-DEBUG=0
+DEBUG=0  # Set to 1 for debugging
 
 
 echo -e "\nRPI Kiosk Installer\n"
