@@ -4,4 +4,4 @@
 
 This setup uses Raspbian Stretch Lite (2017-11-29 currently), XServer, Matchbox, and Chromium.
 
-See the [install.sh](install.sh) script for details.
+See the [installer.sh](installer.sh) script for details.
