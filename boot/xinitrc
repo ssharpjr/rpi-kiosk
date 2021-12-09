@@ -17,8 +17,8 @@ while true; do
     rm -rf /home/${APP_USER}/.pki;
 
     # Generate the bare minimum to keep Chromium happy!
-    mkdir -p /home/${APP_USER}/.config/chromium/Default
-    sqlite3 /home/${APP_USER}/.config/chromium/Default/Web\ Data "CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR); INSERT INTO meta VALUES('version','46'); CREATE TABLE keywords (foo INTEGER);";
+    # mkdir -p /home/${APP_USER}/.config/chromium/Default
+    # sqlite3 /home/${APP_USER}/.config/chromium/Default/Web\ Data "CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR); INSERT INTO meta VALUES('version','46'); CREATE TABLE keywords (foo INTEGER);";
 
     # Disable DPMS / Screen blanking
     xset -dpms

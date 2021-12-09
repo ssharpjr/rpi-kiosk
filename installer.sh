@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # RPI Kiosk Installer for Raspberry Pi
 
-# Variables
+# Update the following files:
+# - boot/HOSTNAME.TXT - This is the RPI's hostname.
+# - boot/LINK.TXT - This is the URL that will be displayed.
+
+# Variables - Update to your needs.
 HOSTNAME_FILE="/boot/HOSTNAME.TXT"
 APP_USER="runner"
 APP_USER_PW="tpirunner"
@@ -48,6 +52,9 @@ set_hostname() {
         echo -e "Updating Hostname\n"
         echo ${NEW_HOSTNAME} | sudo tee /etc/hostname
         sudo sed -i "s/127\.0\.1\.1\t${HOSTNAME}/127\.0\.1\.1\t${NEW_HOSTNAME}/g" \
+            /etc/hosts
+				# Sometimes there is a double tab?
+        sudo sed -i "s/127\.0\.1\.1\t\t${HOSTNAME}/127\.0\.1\.1\t${NEW_HOSTNAME}/g" \
             /etc/hosts
     else
         echo -e "Hostname is correct\n"
@@ -235,6 +242,10 @@ setup_kiosk() {
 }
 
 
+final_steps() {
+    echo -e "\n*** Install complete. Reboot the Pi to start the kiosk. ***\n"
+}
+
 main() {
     check_root
     check_network
@@ -274,7 +285,8 @@ main() {
     set_pause
     set_locale
     set_pause
-    run_read_only_fs
+    # run_read_only_fs
+		final_steps
 }
 
 
