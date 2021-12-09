@@ -2,7 +2,7 @@
 
 ##### Files for setting up a Raspberry Pi 3 as a ~~Read Only~~ web kiosk
 
-This setup uses Raspbian Bullseye Lite (armhf 2021-10-30 currently), XServer, Matchbox, and Chromium.
+This setup uses Raspbian Bullseye Lite (armhf 2021-10-30 currently), XServer, Matchbox, and Chromium.  
 (_The read-only feature is not longer stable_)
 
 See the __installer.sh__ script for details.  
