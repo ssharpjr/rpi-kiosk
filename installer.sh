@@ -8,9 +8,9 @@
 # Variables - Update to your needs.
 HOSTNAME_FILE="/boot/HOSTNAME.TXT"
 APP_USER="runner"
-APP_USER_PW="tpirunner"
+APP_USER_PW="runnerpw"
 MAINT_USER="pimaint"
-MAINT_USER_PW="tpimaint"
+MAINT_USER_PW="maintpw"
 REPO="rpi-kiosk"
 DEBUG=0  # Set to 1 for debugging
 
@@ -286,7 +286,7 @@ main() {
     set_locale
     set_pause
     # run_read_only_fs
-		final_steps
+    final_steps
 }
 
 
